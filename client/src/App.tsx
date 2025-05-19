@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
 class App extends Component {
   state = {message: ''};
@@ -16,10 +18,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>{this.state.message}</p>
-        </header>
+        <Routes>
+        <Route path="/" element={ <Login/> } />
+        <Route path="/dashboard" element={ <Dashboard/> } />
+      </Routes>
       </div>
     );
   }

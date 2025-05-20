@@ -8,6 +8,15 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [view, setView] = useState('Login');
 
+  async function handleGoogleAuth() {
+    const response = await fetch('http://localhost:3000/requestOauth', {
+      method: 'POST',
+    });
+    const data = await response.json();
+    console.log(data);
+    window.location.href = data.url;
+  }
+
   const handleLogin = () => {
       console.log(email, password);
   }
@@ -24,7 +33,7 @@ function LoginPage() {
             <TextInput type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/> */}
 
             <div style={styles.buttonContainer}>
-            <button style={styles.button} onClick={() => {}}>
+            <button style={styles.button} onClick={() => {handleGoogleAuth()}}>
               <p style={styles.text}>Google</p>
             </button>
             <button style={styles.button} onClick={() => {}}>

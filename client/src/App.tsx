@@ -4,9 +4,12 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import GoogleAuthLoader from './pages/GoogleAuthLoader';
+import LinkedInAuthLoader from './pages/LinkedInAuthLoader';
 
 class App extends Component {
   state = {message: ''};
+
 
   componentDidMount() {
     fetch('/')
@@ -21,6 +24,8 @@ class App extends Component {
         <Routes>
         <Route path="/" element={ <Login/> } />
         <Route path="/dashboard" element={ <Dashboard/> } />
+        <Route path="/googleAuthLoader" element={ <GoogleAuthLoader/> } />
+        <Route path="/linkedInAuthLoader" element={ <LinkedInAuthLoader/> } />
       </Routes>
       </div>
     );

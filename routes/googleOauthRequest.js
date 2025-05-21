@@ -8,7 +8,7 @@ router.post('/', async function (req, res, next) {
     console.log('Received POST /requestOauth');
     res.header('Referrer-Policy', 'no-referrer-when-downgrade');
 
-    const redirectUrl = 'http://localhost:3001/dashboard';
+    const redirectUrl = 'http://localhost:3001/googleAuthLoader';
 
     const client = new OAuth2Client(
         process.env.GOOGLE_OAUTH_CLIENT_ID,
@@ -17,7 +17,7 @@ router.post('/', async function (req, res, next) {
     );
     const authorizeUrl = client.generateAuthUrl({
         access_type: 'offline',
-        scope: ['https://www.googleapis.com/auth/userinfo.profile openid'],
+        scope: ['https://www.googleapis.com/auth/userinfo.profile openid email'],
     });
 
     res.json({ url: authorizeUrl });

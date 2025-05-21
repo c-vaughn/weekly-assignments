@@ -5,18 +5,19 @@ dotenv.config();
 const { OAuth2Client } = require('google-auth-library');
 
 async function getUserData(access_token) {
-    const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token${access_token}`);
+    const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
     const data = await response.json();
     console.log('user data', data);
+    return data;
 }
 
 router.get('/', async function (req, res, next) {
     const code = req.query.code;
     try {
-        const redirectUrl = 'http://127.0.0.1:2000/oauth';
+        const redirectUrl = 'http://localhost:3001/googleAuthLoader';
         const client = new OAuth2Client(
-            process.env.GOOGLE_CLIENT_ID,
-            process.env.GOOGLE_CLIENT_SECRET,
+            process.env.GOOGLE_OAUTH_CLIENT_ID,
+            process.env.GOOGLE_OAUTH_CLIENT_SECRET,
             redirectUrl
         );
         const response = await client.getToken(code);
@@ -24,7 +25,8 @@ router.get('/', async function (req, res, next) {
         console.log('response', response);
         const user = client.credentials;
         console.log('user', user);
-        await getUserData(user.access_token);
+        const userData = await getUserData(user.access_token);
+        res.json({ user: userData });
 
     } catch (error) {
         console.error('Google sign in failed', error);

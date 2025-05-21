@@ -17,6 +17,15 @@ function LoginPage() {
     window.location.href = data.url;
   }
 
+  async function handleLinkedInAuth() {
+    const response = await fetch('http://localhost:3000/linkedInOauthRequest', {
+      method: 'POST',
+    });
+    const data = await response.json();
+    console.log(data);
+    window.location.href = data.url;
+  }
+
   const handleLogin = () => {
       console.log(email, password);
   }
@@ -36,7 +45,7 @@ function LoginPage() {
             <button style={styles.button} onClick={() => {handleGoogleAuth()}}>
               <p style={styles.text}>Google</p>
             </button>
-            <button style={styles.button} onClick={() => {}}>
+            <button style={styles.button} onClick={() => {handleLinkedInAuth()}}>
               <p style={styles.text}>LinkedIn</p>
             </button>
             </div>

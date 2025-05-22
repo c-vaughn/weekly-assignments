@@ -1,6 +1,7 @@
 var express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 mongoose.connect('mongodb://localhost:27017/weekly_assignments_db', {
   useNewUrlParser: true,
@@ -30,6 +31,17 @@ app.use(session({
   cookie: { secure: false } // Set to true if using HTTPS
 }));
 
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:3001',
+  clientID: 'xKQxtyszW6MZqxW5fWXn8Bx7E059r4UC',
+  issuerBaseURL: 'https://dev-xsd6mye8d161eg1c.us.auth0.com'
+};
+
+app.use(auth(config));
+
 var googleOauthRequestRouter = require('./routes/googleOauthRequest');
 var googleOauthRouter = require('./routes/googleOauth');
 var linkedInOauthRequestRouter = require('./routes/linkedInOauthRequest');
@@ -44,6 +56,14 @@ app.use('/user', userRouter);
 app.post('/test431', (req, res) => res.json({ ok: true }));
 app.get('/session', (req, res) => {
   res.json({ user: req.session.user || null });
+});
+
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
+
+app.get('/auth0status', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
 module.exports = app;

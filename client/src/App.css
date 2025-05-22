@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.buttonIcon {
+  font-size: 48px;
+  margin-right: 8px;
+  color: #FFAB00;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.buttonIcon:hover {
+  color: #FFE380;
+}

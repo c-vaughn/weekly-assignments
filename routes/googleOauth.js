@@ -26,6 +26,7 @@ router.get('/', async function (req, res, next) {
         const user = client.credentials;
         console.log('user', user);
         const userData = await getUserData(user.access_token);
+        req.session.user = userData;
         res.json({ user: userData });
 
     } catch (error) {

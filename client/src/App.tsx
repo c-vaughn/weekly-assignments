@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import GoogleAuthLoader from './pages/GoogleAuthLoader';
 import LinkedInAuthLoader from './pages/LinkedInAuthLoader';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 class App extends Component {
   state = {message: ''};
@@ -20,14 +22,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Routes>
-        <Route path="/" element={ <Login/> } />
-        <Route path="/dashboard" element={ <Dashboard/> } />
-        <Route path="/googleAuthLoader" element={ <GoogleAuthLoader/> } />
-        <Route path="/linkedInAuthLoader" element={ <LinkedInAuthLoader/> } />
-      </Routes>
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={ <Login/> } />
+            <Route path="/dashboard" element={ <Dashboard/> } />
+            <Route path="/googleAuthLoader" element={ <GoogleAuthLoader/> } />
+            <Route path="/linkedInAuthLoader" element={ <LinkedInAuthLoader/> } />
+          </Routes>
+        </div>
+      </Provider>
     );
   }
 }

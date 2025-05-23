@@ -1,13 +1,15 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import colors from '../colors';
 import TextInput from '../components/TextInput';
-
-
+import { IonIcon } from '@ionic/react';
+import { logoApple, logoGoogle, logoLinkedin } from 'ionicons/icons';
+import '../App.css';
+import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [view, setView] = useState('Login');
-
+  const navigate = useNavigate();
   async function handleGoogleAuth() {
     const response = await fetch('http://localhost:3000/requestOauth', {
       method: 'POST',
@@ -26,6 +28,11 @@ function LoginPage() {
     window.location.href = data.url;
   }
 
+  function handleAuth0Auth() {
+    window.location.href = 'http://localhost:3000/login';
+    
+  }
+
   const handleLogin = () => {
       console.log(email, password);
   }
@@ -34,28 +41,48 @@ function LoginPage() {
       console.log(email, password);
   }
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/profile', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          console.log('No user profile found or not authenticated.');
+          return; // Just exit, don't throw
+        }
+
+        const text = await response.text();
+        if (!text) {
+          console.log('No user profile data returned.');
+          return;
+        }
+
+        const data = JSON.parse(text);
+        navigate('/dashboard');
+        console.log(data);
+      } catch (error) {
+        console.log('Error fetching profile:', error);
+      }
+    };
+    fetchProfile();
+  }, []);
+
   return (
     <div style={styles.contentContainer}>
         <div style={styles.loginContainer}>
           <h1 style={styles.title}>{view}</h1>
-            {/* <TextInput type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <TextInput type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/> */}
 
             <div style={styles.buttonContainer}>
-            <button style={styles.button} onClick={() => {handleGoogleAuth()}}>
-              <p style={styles.text}>Google</p>
-            </button>
-            <button style={styles.button} onClick={() => {handleLinkedInAuth()}}>
-              <p style={styles.text}>LinkedIn</p>
-            </button>
-            </div>
-            {/* <button style={styles.button} onClick={() => view === "Login" ? handleSignup() : handleLogin()}>
-              <p style={styles.text}>{view}</p>
-            </button> */}
+            <IonIcon icon={logoGoogle} className='buttonIcon' onClick={handleGoogleAuth}/>
+           
+            <IonIcon icon={logoLinkedin} className='buttonIcon' onClick={handleLinkedInAuth}/>
 
-            {/* <button style={{backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}} onClick={() => view === "Login" ? setView("Signup") : setView("Login")}>
-              <p style={{...styles.text, color: colors.accent}}>{view === "Login" ? "Don't have an account? Sign up" : "Already have an account? Login"}</p>
-            </button> */}
+            <button style={styles.button} onClick={handleAuth0Auth}>Login with Okta</button>
+
+            </div>
 
         </div>      
     </div>
@@ -89,7 +116,7 @@ const styles = {
     button: {
       borderColor: colors.accent,
       backgroundColor: "transparent",
-      color: colors.surface,
+      color: colors.accent,
       width: '200px',
       height: '48px',
       borderRadius: 24,
@@ -120,11 +147,12 @@ const styles = {
     buttonContainer: {
       display: 'flex',
       flexDirection: 'row' as 'row',
-      gap: 16,
+      gap: 48,
     },
     text: {
       color: colors.textPrimary,
-    }
+    },
+
 }
 
 export default LoginPage;

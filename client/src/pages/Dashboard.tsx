@@ -14,7 +14,19 @@ function Dashboard() {
         if (data.user) {
           setUser(data.user);
         } else {
-          navigate('/');
+          fetch('http://localhost:3000/profile', {
+            credentials: 'include', // Important: send cookies!
+          })
+            .then(res => {
+              if (res.ok) return res.json();
+              throw new Error('Not authenticated');
+            })
+            .then(data => {
+              setUser(data);
+              console.log(data);
+            })
+            .catch(() => setUser(null));
+          
         }
       });
   }, [navigate]);

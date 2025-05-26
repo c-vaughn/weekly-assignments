@@ -36,9 +36,9 @@ function Dashboard() {
   }
 
   return (
-    <div style={{ color: 'white' }}>
+    <><div style={{ color: 'white' }}>
       <h1>Logged in with email {user.email}</h1>
-    </div>
+    </div><button onClick={() => navigate('/weather')}>Go to 3rd party API Page</button></>
   );
 }
 

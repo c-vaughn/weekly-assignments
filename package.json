@@ -20,6 +20,7 @@
     "google-auth-library": "^9.15.1",
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.0",
-    "openid-client": "^6.5.0"
+    "openid-client": "^6.5.0",
+    "openmeteo": "^1.2.0"
   }
 }

@@ -8,7 +8,7 @@ import GoogleAuthLoader from './pages/GoogleAuthLoader';
 import LinkedInAuthLoader from './pages/LinkedInAuthLoader';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-
+import WeatherRequest from './pages/WeatherRequest';
 class App extends Component {
   state = {message: ''};
 
@@ -29,6 +29,7 @@ class App extends Component {
             <Route path="/dashboard" element={ <Dashboard/> } />
             <Route path="/googleAuthLoader" element={ <GoogleAuthLoader/> } />
             <Route path="/linkedInAuthLoader" element={ <LinkedInAuthLoader/> } />
+            <Route path="/weather" element={ <WeatherRequest/> } />
           </Routes>
         </div>
       </Provider>
